@@ -1,0 +1,25 @@
+{
+  "id": "pe_vc_investment_tech_exhibition_search_1",
+  "pluginKey": "@official-plugins/ai-search-summary",
+  "pluginVersion": "1.0.11",
+  "name": "PE/VC投资动态与科技展会参展信息搜索",
+  "description": "搜索全球顶级PE/VC（IDG、红杉中国、高瓴等）最新投资事件动态，以及CES、MWC、WAIC等全球科技展会中国企业参展信息，返回结构化的搜索结果摘要。",
+  "icon": "",
+  "paramsSchema": {
+    "type": "object",
+    "properties": {
+      "additional_keywords": {
+        "type": "string",
+        "description": "附加搜索关键词（可选）"
+      }
+    },
+    "required": []
+  },
+  "formValue": {
+    "query": "IDG 红杉中国 高瓴 最新投资事件动态 CES MWC WAIC 中国企业参展信息 {{input.additional_keywords}}",
+    "instruction": "请将搜索结果整理为两大部分：第一部分为PE/VC投资动态，按时间倒序排列，包含投资机构名称、被投企业名称、投资轮次、投资金额、投资领域；第二部分为科技展会参展信息，按展会名称分类，包含展会名称、参展企业名称、企业展示的核心产品/技术、所属行业。所有信息优先返回近3个月的最新内容，确保数据准确，来源可靠。"
+  },
+  "createdAt": 1784714138612,
+  "updatedAt": 1784714138612,
+  "createdBy": 7664449847373663497
+}
