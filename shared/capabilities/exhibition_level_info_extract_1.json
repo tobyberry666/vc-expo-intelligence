@@ -1,0 +1,68 @@
+{
+  "id": "exhibition_level_info_extract_1",
+  "pluginKey": "@official-plugins/ai-text-to-json",
+  "pluginVersion": "1.0.23",
+  "name": "从搜索结果提取展会级别信息",
+  "description": "专门从搜索结果文本中提取展会相关的结构化信息，包含展会名称、类型、日期、地点、中国参展企业数量及名称列表等字段",
+  "icon": "",
+  "paramsSchema": {
+    "type": "object",
+    "properties": {
+      "search_result_text": {
+        "description": "包含展会信息的搜索结果文本内容",
+        "type": "string"
+      }
+    },
+    "required": [
+      "search_result_text"
+    ]
+  },
+  "formValue": {
+    "prompt": "你是一位专业的展会信息分析专家，请从以下搜索结果文本中提取展会相关的结构化信息。\n\n搜索结果文本：\n{{input.search_result_text}}\n\n提取要求：\n1. 准确识别文本中提到的所有展会信息\n2. 每个展会的信息需完整提取要求的字段\n3. 未找到的字段填空字符串\n4. 日期格式统一为YYYY-MM-DD，如果是日期范围则用\"YYYY-MM-DD至YYYY-MM-DD\"格式\n5. 中国参展企业名称列表提取所有相关企业名称，确保准确完整",
+    "jsonStructure": [
+      {
+        "name": "exhibition_name",
+        "paramDescription": "展会全称",
+        "paramType": "String"
+      },
+      {
+        "paramDescription": "展会类型，如科技展、行业展、贸易展等",
+        "paramType": "String",
+        "name": "exhibition_type"
+      },
+      {
+        "name": "exhibition_date",
+        "paramDescription": "展会举办日期",
+        "paramType": "String"
+      },
+      {
+        "name": "exhibition_location",
+        "paramDescription": "展会举办地点，包含城市和场馆名称",
+        "paramType": "String"
+      },
+      {
+        "name": "chinese_exhibitor_count",
+        "paramDescription": "中国参展企业的数量，提取到数字直接填写，未找到填0",
+        "paramType": "Number"
+      },
+      {
+        "name": "chinese_exhibitor_names",
+        "paramDescription": "中国参展企业名称列表，items schema: {company_name: string(企业名称)}",
+        "paramType": "Array"
+      },
+      {
+        "name": "exhibition_description",
+        "paramDescription": "展会的简要介绍和描述信息",
+        "paramType": "String"
+      }
+    ],
+    "modelID": "87",
+    "modelParams": {
+      "maxTokens": 8192,
+      "temperature": 0.5
+    }
+  },
+  "createdAt": 1784721882117,
+  "updatedAt": 1784721882117,
+  "createdBy": 7664449847373663497
+}
