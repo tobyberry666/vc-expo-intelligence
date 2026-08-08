@@ -1,0 +1,43 @@
+{
+  "id": "investment_exhibition_info_extract_1",
+  "pluginKey": "@official-plugins/ai-text-to-json",
+  "pluginVersion": "1.0.23",
+  "name": "投资事件与展会参展企业信息提取",
+  "description": "从AI搜索结果文本中提取结构化的投资事件信息和展会参展企业信息",
+  "icon": "",
+  "paramsSchema": {
+    "properties": {
+      "search_result_text": {
+        "type": "string",
+        "description": "包含投资事件和展会参展企业信息的AI搜索结果文本"
+      }
+    },
+    "required": [
+      "search_result_text"
+    ],
+    "type": "object"
+  },
+  "formValue": {
+    "prompt": "你是一位专业的产业信息分析专家，擅长从各类文本中精准提取投资事件和展会参展企业相关信息。\n\n请从以下搜索结果文本中提取相关信息：\n{{input.search_result_text}}\n\n提取要求：\n1. 投资事件信息提取完整的投资方、被投企业、投资金额、投资轮次、投资时间等关键信息\n2. 展会参展企业信息提取完整的企业名称、所属行业、参展产品、企业所在地等关键信息\n3. 未找到的字段填空字符串\n4. 日期统一使用YYYY-MM-DD格式，无法确定具体日期的填YYYY-MM或YYYY",
+    "jsonStructure": [
+      {
+        "name": "investment_events",
+        "paramDescription": "投资事件列表，items schema: {investor: string(投资方), invested_company: string(被投企业), investment_amount: string(投资金额), investment_round: string(投资轮次), investment_date: string(投资时间), investment_industry: string(所属行业)}",
+        "paramType": "Array"
+      },
+      {
+        "name": "exhibition_companies",
+        "paramDescription": "展会参展企业列表，items schema: {company_name: string(企业名称), industry: string(所属行业), exhibition_products: string(参展产品), company_location: string(企业所在地), exhibition_name: string(展会名称)}",
+        "paramType": "Array"
+      }
+    ],
+    "modelID": "87",
+    "modelParams": {
+      "maxTokens": 8192,
+      "temperature": 0.5
+    }
+  },
+  "createdAt": 1784721816898,
+  "updatedAt": 1784721816898,
+  "createdBy": 7664449847373663497
+}
