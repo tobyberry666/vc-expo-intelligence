@@ -1,109 +1,100 @@
-# 项目技术规范
+# 全球创投与科技展会情报追踪平台
+
+一站式聚合全球顶级 PE/VC 投资动态与国际科技展会参展信息，提供结构化目录与实时时间线视图。面向投资研究员、创业者、科技行业从业者的商业情报工具。
+
+## 功能特性
+
+- **情报概览** — 5 秒掌握最新创投与展会动态全貌，核心 KPI 统计卡片 + 最新动态 Feed 流
+- **投资事件库** — 支持目录视图（机构→赛道→企业三级折叠）与时间线视图一键切换，多维度筛选
+- **科技展会** — 全球科技展会卡片网格 + 中国参展企业查询，按类型/地区/时间筛选
+- **多维筛选** — 投资机构、赛道、时间范围、关键词组合过滤，筛选状态同步 URL
+- **收藏功能** — 投资事件 / 展会条目收藏，localStorage 持久化
+- **AI 实时搜索** — 接入妙搭平台 AI 搜索插件，实时获取全球创投资讯
 
 ## 技术栈
 
-- 前端: React 19 + TypeScript
-- 样式: Tailwind CSS v4
-- UI 组件: shadcn/ui `import { Button } from "@/components/ui/button";`
-- 图标: lucide-react `import { SearchIcon } from "lucide-react";`
-- 图表: echarts-for-react `import ReactECharts from "echarts-for-react";`
-- 动画: framer-motion `import { motion } from "framer-motion";`
-- 路由: react-router-dom `import { Link, useNavigate } from "react-router-dom";`
+| 类别 | 技术 |
+|------|------|
+| 框架 | React 19 + TypeScript |
+| 构建 | Vite 8 |
+| 样式 | Tailwind CSS v4 |
+| UI 组件 | shadcn/ui (New York 风格) |
+| 图标 | lucide-react |
+| 图表 | echarts-for-react |
+| 动画 | framer-motion |
+| 路由 | react-router-dom v7 |
+| 表单 | react-hook-form + zod |
 
----
+## 快速开始
 
-## 目录结构
+```bash
+# 1. 克隆仓库
+git clone https://github.com/tobyberry666/vc-expo-intelligence.git
+cd vc-expo-intelligence
+
+# 2. 安装依赖
+npm install
+
+# 3. 启动开发服务器
+npm run dev
+```
+
+启动后在浏览器打开终端提示的 localhost 地址即可访问。
+
+> **注意**：本项目基于妙搭（MiaoDa）平台开发，AI 实时搜索等插件功能需在妙搭平台运行时中使用。本地开发时 UI 框架和页面结构可正常渲染，AI 搜索功能展示为示例数据。
+
+## 项目结构
 
 ```
 src/
-├── index.tsx            # 入口（勿修改）
-├── app.tsx              # 路由配置（仅在 <Routes> 内增删 <Route>）
-├── index.css            # 全局样式 + 主题变量
-├── components/          # 基础 UI 组件（禁止存放业务组件）
-│   ├── layout.tsx       # 全局布局容器（含 <Outlet />）
-│   └── ui/              # shadcn/ui 内置组件（勿修改）
-├── pages/               # 页面模块（每个页面一个目录）
-│   ├── <PageName>/      # 页面目录示例
-│   │   ├── PageName.tsx        # 页面入口文件与目录同名
-│   │   └── components/         # 页面专属组件
-│   └── NotFoundPage/
-│       └── NotFoundPage.tsx
+├── app.tsx              # 路由配置
+├── index.tsx            # 应用入口
+├── index.css            # 全局样式 + 字体引入
+├── tailwind-theme.css   # 主题配色变量
+├── components/          # 共享组件
+│   ├── Layout.tsx       # 全局布局（Topbar + Outlet）
+│   ├── Header.tsx       # 顶部导航栏
+│   ├── LiveIndicator.tsx # AI 实时数据指示器
+│   └── ui/              # shadcn/ui 基础组件库
+├── pages/               # 页面模块
+│   ├── HomePage/        # 情报概览首页
+│   ├── InvestmentsPage/ # 投资事件库
+│   ├── InvestmentDetailPage/ # 投资详情
+│   ├── ExposPage/       # 科技展会
+│   ├── ExpoDetailPage/  # 展会详情
+│   └── NotFoundPage/    # 404 页面
 ├── hooks/               # 自定义 Hooks
-└── lib/                 # 工具函数（cn() 等）
+│   ├── useLiveFeed.ts   # AI 实时数据引擎
+│   ├── useFavorites.ts  # 收藏管理
+│   └── use-mobile.ts    # 响应式检测
+├── data/                # 数据类型定义
+│   ├── investments.ts   # 投资事件接口
+│   └── expos.ts         # 展会数据接口
+└── lib/                 # 工具函数
+    ├── utils.ts         # cn() 等通用工具
+    └── chart-colors.ts  # 图表配色常量
 
 shared/
-└── static/              # 静态资源
-    ├── data/            # 数据文件（JSON）
-    └── images/          # 图片资源
+└── capabilities/        # 妙搭平台能力声明
 ```
 
----
+## 页面说明
 
-## 模板初始状态
+| 页面 | 路由 | 说明 |
+|------|------|------|
+| 情报概览 | `/` | 核心统计卡片 + 最新动态 Feed + 快捷导航入口 |
+| 投资事件库 | `/investments` | 目录树/时间线双视图 + 多维度筛选 + 收藏 |
+| 投资详情 | `/investments/:id` | 单笔投资完整信息 + 关联推荐 |
+| 科技展会 | `/expos` | 展会卡片网格 + 参展企业查询 + 筛选 |
+| 展会详情 | `/expos/:id` | 展会基础信息 + 参展企业可搜索表格 |
 
-- `app.tsx` 首页路由指向平台内置的 `<Welcome />` 组件
-- 开发时需将 `index` 路由替换为业务首页，并在 `pages/` 下创建对应页面目录
-- `layout.tsx` 为空壳容器（仅 `<Outlet />`），需根据需求实现导航和布局
+## 设计风格
 
----
+- **Precision Intel Grid** — 瑞士极简排版 + 终端级精度
+- **深墨蓝基底** + 冷银灰信息层 + 琥珀金主行动色
+- **Space Grotesk** 标题 + **Noto Sans SC** 正文
+- 1px 细分隔线 + 状态点阵，无厚阴影，全靠色差分层的暗色主题
 
-## 禁止修改的文件
+## License
 
-| 文件 | 原因 |
-|------|------|
-| `src/index.tsx` | Provider 层级 + 样式引入，由模板管理 |
-| `src/components/ui/*` | shadcn/ui 内置组件，版本锁定 |
-
----
-
-## 文件放置规则
-
-| 内容类型 | 放置位置 |
-|---------|---------|
-| 新页面 | `src/pages/<PageName>/PageName.tsx` |
-| 页面专属组件 | `src/pages/<PageName>/components/` |
-| 自定义 Hooks | `src/hooks/` |
-| 工具函数 | `src/lib/` |
-| 静态数据文件 | `shared/static/data/` |
-| 静态图片 | `shared/static/images/` |
-
----
-
-## 导入路径
-
-```typescript
-// @/ 别名 → src/
-import { cn } from "@/lib/utils";
-import { useIsMobile } from "@/hooks/use-mobile";
-
-// @shared/ 别名 → shared/
-import heroImage from "@shared/static/images/hero.png";
-import configData from "@shared/static/config.json";
-```
-
----
-
-## 路由配置
-
-- 新增页面需在 `src/app.tsx` 的 `<Routes>` 内注册 `<Route>`
-- `BrowserRouter` 已在 `index.tsx` 中配置，`app.tsx` 中**禁止**再包裹 Router
-
----
-
-## 主题变量
-
-主题色定义在 `src/index.css`，通过 `:root` CSS 变量 + `@theme inline` 注册到 Tailwind。
-
-| 用途 | Tailwind 类 | CSS 变量 |
-|------|------------|----------|
-| 页面背景 | `bg-background` | `--background` |
-| 主文本 | `text-foreground` | `--foreground` |
-| 卡片背景 | `bg-card` | `--card` |
-| 次要文本 | `text-muted-foreground` | `--muted-foreground` |
-| 主色 | `bg-primary` / `text-primary` | `--primary` |
-| 强调色 | `bg-accent` | `--accent` |
-| 边框 | `border-border` | `--border` |
-| 危险色 | `text-destructive` | `--destructive` |
-| 图表色 | `bg-chart-1` ~ `bg-chart-5` | `--chart-1` ~ `--chart-5` |
-
-HSL 格式使用**空格分隔**：`--primary: hsl(150 60% 40%);`
+MIT
