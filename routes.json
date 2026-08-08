@@ -1,0 +1,17 @@
+[
+  {
+    "path": "/app/app_17amnxwuv8e/"
+  },
+  {
+    "path": "/app/app_17amnxwuv8e/investments"
+  },
+  {
+    "path": "/app/app_17amnxwuv8e/investments/:id"
+  },
+  {
+    "path": "/app/app_17amnxwuv8e/expos"
+  },
+  {
+    "path": "/app/app_17amnxwuv8e/expos/:id"
+  }
+]
