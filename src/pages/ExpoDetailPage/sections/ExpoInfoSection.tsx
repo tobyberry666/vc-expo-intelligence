@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { useMemo, useEffect, useRef } from 'react';
+import { formatDateRange, getExpoStatus } from '@/features/feed/dates';
+import { Link, useLocation } from 'react-router-dom';
 import {
   ArrowLeft,
   CalendarDays,
@@ -18,8 +19,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useFavorites } from '@/hooks/useFavorites';
-import { IExpo } from '@/data/expos';
-import { resolveAppUrl } from '@lark-apaas/client-toolkit-lite';
+import type { IExpo } from '@/data/expos';
+import { resolveAppUrl } from '@/infrastructure/runtime';
 
 interface ExpoInfoSectionProps {
   expo: IExpo;
@@ -39,44 +40,23 @@ const TYPE_COLORS: Record<IExpo['type'], string> = {
   industrial: 'bg-chart-4/15 text-chart-4 border-chart-4/20',
 };
 
-function formatDateRange(start: string, end: string): string {
-  const s = new Date(start);
-  const e = new Date(end);
-  const sMonth = s.getMonth() + 1;
-  const eMonth = e.getMonth() + 1;
-  if (sMonth === eMonth) {
-    return `${s.getFullYear()}年${sMonth}月${s.getDate()}日 - ${e.getDate()}日`;
-  }
-  return `${s.getFullYear()}年${sMonth}月${s.getDate()}日 - ${eMonth}月${e.getDate()}日`;
-}
-
-function getExpoStatus(startDate: string, endDate: string): { label: string; variant: string } {
-  const now = new Date();
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  if (now < start) {
-    const diffDays = Math.ceil((start.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-    return { label: `${diffDays}天后开展`, variant: 'bg-warning/15 text-warning border-warning/20' };
-  }
-  if (now >= start && now <= end) {
-    return { label: '进行中', variant: 'bg-success/15 text-success border-success/20' };
-  }
-  return { label: '已结束', variant: 'bg-muted text-muted-foreground border-border' };
-}
-
 export default function ExpoInfoSection({ expo }: ExpoInfoSectionProps) {
   const { isFavorited, toggleFavorite } = useFavorites();
   const [copied, setCopied] = useState(false);
+  const { search } = useLocation();
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(copyTimer.current), []);
   const favorited = isFavorited(expo.id, 'expo');
   const status = useMemo(() => getExpoStatus(expo.startDate, expo.endDate), [expo.startDate, expo.endDate]);
 
   const handleCopyLink = async () => {
-    const url = resolveAppUrl(`/expos/${expo.id}`);
     try {
+      const url = resolveAppUrl(`/expos/${expo.id}`);
       await navigator.clipboard.writeText(url);
       setCopied(true);
       toast.success('链接已复制到剪贴板');
-      setTimeout(() => setCopied(false), 2000);
+      clearTimeout(copyTimer.current);
+      copyTimer.current = setTimeout(() => setCopied(false), 2000);
     } catch {
       toast.error('复制失败，请手动复制链接');
     }
@@ -87,7 +67,7 @@ export default function ExpoInfoSection({ expo }: ExpoInfoSectionProps) {
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-sm text-muted-foreground">
         <Link
-          to="/expos"
+          to={`/expos${search}`}
           className="flex items-center gap-1.5 hover:text-foreground transition-colors"
         >
           <ArrowLeft className="size-3.5" />

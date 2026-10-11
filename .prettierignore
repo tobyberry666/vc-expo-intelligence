@@ -1,0 +1,27 @@
+node_modules
+dist
+dist-platform
+coverage
+playwright-report
+test-results
+package-lock.json
+docs/security/*.json
+# Preserve untouched UI templates and existing layout formatting.
+src/components/ui
+src/pages
+src/index.css
+src/typography.css
+src/tailwind-theme.css
+AGENTS.md
+skills
+shared
+# Existing files outside this upgrade; do not reformat unrelated code.
+components.json
+scripts/setup-git-hooks.mjs
+src/app.tsx
+src/data
+src/hooks/use-mobile.ts
+src/lib
+tsconfig.app.json
+tsconfig.json
+vite.config.ts

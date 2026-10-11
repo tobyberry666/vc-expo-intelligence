@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { format, parseISO } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
@@ -39,6 +39,7 @@ export default function InvestmentTimelineSection({
   toggleFavorite,
 }: InvestmentTimelineSectionProps) {
   const navigate = useNavigate();
+  const { search } = useLocation();
 
   const groups = useMemo<IGroup[]>(() => {
     const map = new Map<string, IInvestment[]>();
@@ -58,7 +59,7 @@ export default function InvestmentTimelineSection({
       .map(([monthKey, items]) => {
         const monthLabel = monthKey === '未披露'
           ? '日期未知'
-          : format(parseISO(`${monthKey}-01`), 'yyyy年M月', { locale: zhCN });
+          : monthKey.length === 4 ? `${monthKey}年` : format(parseISO(`${monthKey}-01`), 'yyyy年M月', { locale: zhCN });
         return { monthKey, monthLabel, items };
       });
   }, [investments]);
@@ -119,7 +120,8 @@ export default function InvestmentTimelineSection({
                       'group cursor-pointer border-border/50 hover:border-primary/40 transition-colors',
                       favorited && 'border-primary/30'
                     )}
-                    onClick={() => navigate(`/investments/${inv.id}`)}
+                    onClick={() => navigate(`/investments/${inv.id}${search}`)}
+                    role="link" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter' && event.target === event.currentTarget) navigate(`/investments/${inv.id}${search}`); }}
                   >
                     <CardContent className="p-4 md:p-5">
                       <div className="flex items-start gap-3 min-w-0">

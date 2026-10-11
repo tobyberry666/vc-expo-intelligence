@@ -1,0 +1,314 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@lark-apaas/client-toolkit-lite": {
+      "name": "@lark-apaas/client-toolkit-lite",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "@lark-apaas/miaoda-inspector",
+        "@lark-apaas/observable-web"
+      ],
+      "effects": [],
+      "range": ">=1.1.7-alpha.0",
+      "nodes": [
+        "node_modules/@lark-apaas/client-toolkit-lite"
+      ],
+      "fixAvailable": {
+        "name": "@lark-apaas/client-toolkit-lite",
+        "version": "1.1.6",
+        "isSemVerMajor": true
+      }
+    },
+    "@lark-apaas/coding-presets-react": {
+      "name": "@lark-apaas/coding-presets-react",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "stylelint"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/@lark-apaas/coding-presets-react"
+      ],
+      "fixAvailable": false
+    },
+    "@lark-apaas/miaoda-inspector": {
+      "name": "@lark-apaas/miaoda-inspector",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "react-dev-utils"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/@lark-apaas/miaoda-inspector"
+      ],
+      "fixAvailable": true
+    },
+    "@lark-apaas/observable-web": {
+      "name": "@lark-apaas/observable-web",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@opentelemetry/sdk-logs"
+      ],
+      "effects": [
+        "@lark-apaas/client-toolkit-lite"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@lark-apaas/observable-web"
+      ],
+      "fixAvailable": {
+        "name": "@lark-apaas/client-toolkit-lite",
+        "version": "1.1.6",
+        "isSemVerMajor": true
+      }
+    },
+    "@opentelemetry/core": {
+      "name": "@opentelemetry/core",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1153174,
+          "name": "@opentelemetry/core",
+          "dependency": "@opentelemetry/core",
+          "title": "OpenTelemetry Core: Unbounded memory allocation in W3C Baggage propagation",
+          "url": "https://github.com/advisories/GHSA-8988-4f7v-96qf",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-770"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": "<2.8.0"
+        }
+      ],
+      "effects": [
+        "@opentelemetry/resources",
+        "@opentelemetry/sdk-logs"
+      ],
+      "range": "<2.8.0",
+      "nodes": [
+        "node_modules/@opentelemetry/sdk-logs/node_modules/@opentelemetry/core"
+      ],
+      "fixAvailable": {
+        "name": "@lark-apaas/client-toolkit-lite",
+        "version": "1.1.6",
+        "isSemVerMajor": true
+      }
+    },
+    "@opentelemetry/resources": {
+      "name": "@opentelemetry/resources",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@opentelemetry/core"
+      ],
+      "effects": [],
+      "range": "0.8.0 - 2.7.1",
+      "nodes": [
+        "node_modules/@opentelemetry/sdk-logs/node_modules/@opentelemetry/resources"
+      ],
+      "fixAvailable": true
+    },
+    "@opentelemetry/sdk-logs": {
+      "name": "@opentelemetry/sdk-logs",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@opentelemetry/core",
+        "@opentelemetry/resources"
+      ],
+      "effects": [
+        "@lark-apaas/observable-web"
+      ],
+      "range": "<=0.218.0",
+      "nodes": [
+        "node_modules/@opentelemetry/sdk-logs"
+      ],
+      "fixAvailable": {
+        "name": "@lark-apaas/client-toolkit-lite",
+        "version": "1.1.6",
+        "isSemVerMajor": true
+      }
+    },
+    "braces": {
+      "name": "braces",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1240992,
+          "name": "braces",
+          "dependency": "braces",
+          "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+          "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+          "severity": "high",
+          "cwe": [
+            "CWE-674"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=3.0.3"
+        }
+      ],
+      "effects": [
+        "chokidar",
+        "micromatch"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/braces"
+      ],
+      "fixAvailable": false
+    },
+    "chokidar": {
+      "name": "chokidar",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "braces"
+      ],
+      "effects": [
+        "fork-ts-checker-webpack-plugin"
+      ],
+      "range": "2.0.0 - 3.6.0",
+      "nodes": [
+        "node_modules/chokidar"
+      ],
+      "fixAvailable": true
+    },
+    "fast-glob": {
+      "name": "fast-glob",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "micromatch"
+      ],
+      "effects": [
+        "globby",
+        "stylelint"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/fast-glob"
+      ],
+      "fixAvailable": false
+    },
+    "fork-ts-checker-webpack-plugin": {
+      "name": "fork-ts-checker-webpack-plugin",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "chokidar"
+      ],
+      "effects": [
+        "react-dev-utils"
+      ],
+      "range": "0.4.7 - 4.0.0-beta.5 || 6.0.0-alpha.1 - 9.0.3",
+      "nodes": [
+        "node_modules/fork-ts-checker-webpack-plugin"
+      ],
+      "fixAvailable": true
+    },
+    "globby": {
+      "name": "globby",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "fast-glob",
+        "micromatch"
+      ],
+      "effects": [
+        "react-dev-utils",
+        "stylelint"
+      ],
+      "range": ">=8.0.0",
+      "nodes": [
+        "node_modules/globby",
+        "node_modules/stylelint/node_modules/globby"
+      ],
+      "fixAvailable": false
+    },
+    "micromatch": {
+      "name": "micromatch",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "braces"
+      ],
+      "effects": [
+        "fast-glob",
+        "globby",
+        "stylelint"
+      ],
+      "range": ">=0.2.0",
+      "nodes": [
+        "node_modules/micromatch"
+      ],
+      "fixAvailable": false
+    },
+    "react-dev-utils": {
+      "name": "react-dev-utils",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "fork-ts-checker-webpack-plugin",
+        "globby"
+      ],
+      "effects": [
+        "@lark-apaas/miaoda-inspector"
+      ],
+      "range": "6.0.0-next.03604a46 - 6.0.0-next.a671462c || >=6.0.6-next.9b4009d7",
+      "nodes": [
+        "node_modules/react-dev-utils"
+      ],
+      "fixAvailable": true
+    },
+    "stylelint": {
+      "name": "stylelint",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "fast-glob",
+        "globby",
+        "micromatch"
+      ],
+      "effects": [
+        "@lark-apaas/coding-presets-react"
+      ],
+      "range": ">=7.7.1",
+      "nodes": [
+        "node_modules/stylelint"
+      ],
+      "fixAvailable": false
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 11,
+      "critical": 0,
+      "total": 15
+    },
+    "dependencies": {
+      "prod": 525,
+      "dev": 417,
+      "optional": 44,
+      "peer": 51,
+      "peerOptional": 0,
+      "total": 986
+    }
+  }
+}

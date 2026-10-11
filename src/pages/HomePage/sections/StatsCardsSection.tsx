@@ -32,7 +32,7 @@ export default function StatsCardsSection({
     const totalInvestments = liveInvestments.length;
 
     // Count unique institutions from live data
-    const institutions = new Set(liveInvestments.map((i) => i.institution));
+    const institutions = new Set(liveInvestments.map((i) => i.institution).filter((name) => name !== '未披露' && name.trim()));
     const activeInstitutions = institutions.size;
 
     const totalExpos = liveExpos.length;

@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/sheet';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { compareDatesDesc } from '@/features/feed/dates';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useLiveFeed } from '@/hooks/useLiveFeed';
 import LiveIndicator from '@/components/LiveIndicator';
@@ -53,36 +54,32 @@ export default function InvestmentsPage() {
     [allInvestments]
   );
 
-  // Filter state synced with URL search params
-  const [selectedInstitutions, setSelectedInstitutions] = useState<string[]>(() => {
-    const param = searchParams.get('institutions');
-    return param ? param.split(',').filter(Boolean) : [];
-  });
-  const [selectedSectors, setSelectedSectors] = useState<string[]>(() => {
-    const param = searchParams.get('sectors');
-    return param ? param.split(',').filter(Boolean) : [];
-  });
-  const [keyword, setKeyword] = useState(() => searchParams.get('keyword') ?? '');
-  const [onlyFavorites, setOnlyFavorites] = useState(() => searchParams.get('fav') === '1');
-  const [viewMode, setViewMode] = useState<ViewMode>('tree');
+  // URL is the source of truth, including browser back/forward navigation.
+  const selectedInstitutions = useMemo(() => (searchParams.get('institutions') ?? '').split(',').filter(Boolean), [searchParams]);
+  const selectedSectors = useMemo(() => (searchParams.get('sectors') ?? '').split(',').filter(Boolean), [searchParams]);
+  const keyword = searchParams.get('keyword') ?? '';
+  const onlyFavorites = searchParams.get('fav') === '1';
+  const viewMode: ViewMode = searchParams.get('view') === 'timeline' ? 'timeline' : 'tree';
+  const setViewMode = (view: ViewMode) => setSearchParams((previous) => {
+    const params = new URLSearchParams(previous); params.set('view', view); return params;
+  }, { replace: true });
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
   // Sync filters to URL
   const syncToUrl = useCallback(
     (institutions: string[], sectors: string[], kw: string, fav: boolean) => {
-      const params = new URLSearchParams();
-      if (institutions.length) params.set('institutions', institutions.join(','));
-      if (sectors.length) params.set('sectors', sectors.join(','));
-      if (kw) params.set('keyword', kw);
-      if (fav) params.set('fav', '1');
+      const params = new URLSearchParams(searchParams);
+      if (institutions.length) params.set('institutions', institutions.join(',')); else params.delete('institutions');
+      if (sectors.length) params.set('sectors', sectors.join(',')); else params.delete('sectors');
+      if (kw) params.set('keyword', kw); else params.delete('keyword');
+      if (fav) params.set('fav', '1'); else params.delete('fav');
       setSearchParams(params, { replace: true });
     },
-    [setSearchParams]
+    [setSearchParams, searchParams]
   );
 
   const handleInstitutionsChange = useCallback(
     (val: string[]) => {
-      setSelectedInstitutions(val);
       syncToUrl(val, selectedSectors, keyword, onlyFavorites);
     },
     [selectedSectors, keyword, onlyFavorites, syncToUrl]
@@ -90,7 +87,6 @@ export default function InvestmentsPage() {
 
   const handleSectorsChange = useCallback(
     (val: string[]) => {
-      setSelectedSectors(val);
       syncToUrl(selectedInstitutions, val, keyword, onlyFavorites);
     },
     [selectedInstitutions, keyword, onlyFavorites, syncToUrl]
@@ -98,7 +94,6 @@ export default function InvestmentsPage() {
 
   const handleKeywordChange = useCallback(
     (val: string) => {
-      setKeyword(val);
       syncToUrl(selectedInstitutions, selectedSectors, val, onlyFavorites);
     },
     [selectedInstitutions, selectedSectors, onlyFavorites, syncToUrl]
@@ -106,17 +101,12 @@ export default function InvestmentsPage() {
 
   const handleOnlyFavoritesChange = useCallback(
     (val: boolean) => {
-      setOnlyFavorites(val);
       syncToUrl(selectedInstitutions, selectedSectors, keyword, val);
     },
     [selectedInstitutions, selectedSectors, keyword, syncToUrl]
   );
 
   const handleReset = useCallback(() => {
-    setSelectedInstitutions([]);
-    setSelectedSectors([]);
-    setKeyword('');
-    setOnlyFavorites(false);
     setSearchParams(new URLSearchParams(), { replace: true });
   }, [setSearchParams]);
 
@@ -134,12 +124,7 @@ export default function InvestmentsPage() {
         return false;
       if (onlyFavorites && !isFavorited(inv.id, 'investment')) return false;
       return true;
-    }).sort((a, b) => {
-      // Push '未披露' dates to the end
-      if (a.date === '未披露' && b.date !== '未披露') return 1;
-      if (b.date === '未披露' && a.date !== '未披露') return -1;
-      return b.date.localeCompare(a.date);
-    });
+    }).sort((a, b) => compareDatesDesc(a.date, b.date));
   }, [allInvestments, selectedInstitutions, selectedSectors, keyword, onlyFavorites, isFavorited]);
 
   const liveCount = liveInvestments.length;

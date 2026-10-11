@@ -1,0 +1,12 @@
+{
+  "denied": [],
+  "expired": false,
+  "totals": {
+    "info": 0,
+    "low": 0,
+    "moderate": 4,
+    "high": 11,
+    "critical": 0,
+    "total": 15
+  }
+}

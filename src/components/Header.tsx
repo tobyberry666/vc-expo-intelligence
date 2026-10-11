@@ -19,8 +19,12 @@ export default function Header() {
             <Radar className="size-5" />
           </div>
           <div className="hidden sm:block">
-            <span className="text-base font-bold text-foreground tracking-tight">全球创投资讯</span>
-            <span className="block text-[10px] text-muted-foreground -mt-0.5">VC & Expo Intelligence</span>
+            <span className="text-base font-bold text-foreground tracking-tight">
+              全球创投资讯
+            </span>
+            <span className="block text-[10px] text-muted-foreground -mt-0.5">
+              VC & Expo Intelligence
+            </span>
           </div>
         </NavLink>
 
@@ -28,12 +32,15 @@ export default function Header() {
         <nav className="flex items-center gap-1">
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
-            const isActive = item.path === '/'
-              ? pathname === '/'
-              : pathname === item.path || pathname.startsWith(`${item.path}/`);
+            const isActive =
+              item.path === '/'
+                ? pathname === '/'
+                : pathname === item.path ||
+                  pathname.startsWith(`${item.path}/`);
             return (
               <NavLink
                 key={item.path}
+                aria-label={item.label}
                 to={item.path}
                 end={item.path === '/'}
                 className={({ isActive }) =>

@@ -1,0 +1,7 @@
+{
+  "expires": "2026-11-11",
+  "advisories": {
+    "GHSA-vfj7-8cjw-p6xm": "braces: upstream platform development preset, no patched release in npm audit. Do not expose dev servers or process untrusted glob patterns.",
+    "GHSA-8988-4f7v-96qf": "OpenTelemetry core: platform SDK telemetry dependency pins affected version. Await compatible SDK release; standalone runtime excludes SDK JavaScript."
+  }
+}

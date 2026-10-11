@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { compareDatesDesc } from '@/features/feed/dates';
+import { Link, useLocation } from 'react-router-dom';
 import { TrendingUp, Star, Building2, Layers, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { loadLiveFeedCache } from '@/hooks/useLiveFeed';
+import { useLiveFeed } from '@/hooks/useLiveFeed';
 import type { IInvestment } from '@/data/investments';
 import { useFavorites } from '@/hooks/useFavorites';
 
@@ -15,11 +16,10 @@ interface RelatedInvestmentsSectionProps {
 export default function RelatedInvestmentsSection({ current }: RelatedInvestmentsSectionProps) {
   const { isFavorited, toggleFavorite } = useFavorites();
 
+  const { liveInvestments } = useLiveFeed();
+  const { search } = useLocation();
   const related = useMemo(() => {
-    const cache = loadLiveFeedCache();
-    if (!cache?.liveInvestments) return [];
-
-    return cache.liveInvestments
+    return liveInvestments
       .filter(
         (item) =>
           item.id !== current.id &&
@@ -39,10 +39,10 @@ export default function RelatedInvestmentsSection({ current }: RelatedInvestment
       .sort((a, b) => {
         if (a.matchType === 'both' && b.matchType !== 'both') return -1;
         if (b.matchType === 'both' && a.matchType !== 'both') return 1;
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
+        return compareDatesDesc(a.date, b.date);
       })
       .slice(0, 5);
-  }, [current]);
+  }, [current, liveInvestments]);
 
   if (related.length === 0) {
     return null;
@@ -80,7 +80,7 @@ export default function RelatedInvestmentsSection({ current }: RelatedInvestment
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-1.5">
                   <Link
-                    to={`/investments/${item.id}`}
+                    to={`/investments/${item.id}${search}`}
                     className="text-base font-semibold text-foreground hover:text-primary transition-colors truncate"
                   >
                     {item.company}

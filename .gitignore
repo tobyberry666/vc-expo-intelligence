@@ -9,7 +9,12 @@ build/
 */build/
 
 # Environment files
-.env.local
+.env
+.env.*
+!.env.example
+dist-platform/
+test-results/
+playwright-report/
 
 # Logs
 npm-debug.log*

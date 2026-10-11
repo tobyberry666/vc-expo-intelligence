@@ -12,28 +12,19 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { loadLiveFeedCache } from '@/hooks/useLiveFeed';
+import type { IExpo } from '@/data/expos';
 
 interface ExhibitorTableSectionProps {
-  expoId: string;
+  expo: IExpo;
 }
 
 const PAGE_SIZE = 8;
 
-export default function ExhibitorTableSection({ expoId }: ExhibitorTableSectionProps) {
+export default function ExhibitorTableSection({ expo }: ExhibitorTableSectionProps) {
   const [keyword, setKeyword] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { expo, exhibitors } = useMemo(() => {
-    const cache = loadLiveFeedCache();
-    if (!cache?.liveExpos) return { expo: null, exhibitors: [] };
-    const found = cache.liveExpos.find((e) => e.id === expoId);
-    if (!found) return { expo: null, exhibitors: [] };
-    return {
-      expo: found,
-      exhibitors: found.exhibitors ?? [],
-    };
-  }, [expoId]);
+  const exhibitors = useMemo(() => expo.exhibitors ?? [], [expo.exhibitors]);
 
   const filtered = useMemo(() => {
     const kw = keyword.trim().toLowerCase();
@@ -96,6 +87,7 @@ export default function ExhibitorTableSection({ expoId }: ExhibitorTableSectionP
                   </TableRow>
                 </TableHeader>
                 <TableBody>
+                  {paged.length === 0 && <TableRow><TableCell colSpan={2}>未找到匹配的参展企业</TableCell></TableRow>}
                   {paged.map((name, i) => (
                     <TableRow key={name} className="border-border/20 hover:bg-accent/30 transition-colors">
                       <TableCell className="text-muted-foreground tabular-nums text-xs">
