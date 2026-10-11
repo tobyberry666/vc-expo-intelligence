@@ -1,4 +1,6 @@
 import { useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { compareDatesDesc } from '@/features/feed/dates';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, Sparkles, ChevronDown, ChevronUp, Calendar, Loader2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -17,11 +19,22 @@ export default function ExposPage() {
   const { expoSummary, liveExpos, isLoading: isLiveLoading, phase, lastUpdate, error, refresh, hasData } = useLiveFeed();
   const [showAiPanel, setShowAiPanel] = useState(true);
 
-  const [keyword, setKeyword] = useState('');
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [location, setLocation] = useState('all');
-  const [sortBy, setSortBy] = useState('date_desc');
-  const [onlyFavorites, setOnlyFavorites] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const keyword = searchParams.get('keyword') ?? '';
+  const selectedTypes = useMemo(() => (searchParams.get('types') ?? '').split(',').filter(Boolean), [searchParams]);
+  const location = searchParams.get('location') ?? 'all';
+  const sortBy = searchParams.get('sort') ?? 'date_desc';
+  const onlyFavorites = searchParams.get('fav') === '1';
+  const updateParam = (key: string, value: string) => setSearchParams((previous) => {
+    const params = new URLSearchParams(previous);
+    if (value) params.set(key, value); else params.delete(key);
+    return params;
+  }, { replace: true });
+  const setKeyword = (value: string) => updateParam('keyword', value);
+  const setSelectedTypes = (value: string[]) => updateParam('types', value.join(','));
+  const setLocation = (value: string) => updateParam('location', value === 'all' ? '' : value);
+  const setSortBy = (value: string) => updateParam('sort', value);
+  const setOnlyFavorites = (value: boolean) => updateParam('fav', value ? '1' : '');
 
   const expoFavoriteCount = useMemo(
     () => favorites.filter((f) => f.type === 'expo').length,
@@ -64,10 +77,9 @@ export default function ExposPage() {
       result = result.filter((e) => isFavorited(e.id, 'expo'));
     }
 
-    const safeDate = (d: string) => d === '未披露' ? 0 : new Date(d).getTime() || 0;
     switch (sortBy) {
       case 'date_asc':
-        result.sort((a, b) => safeDate(a.startDate) - safeDate(b.startDate));
+        result.sort((a, b) => compareDatesDesc(a.startDate, b.startDate) * (a.startDate === '未披露' || b.startDate === '未披露' ? 1 : -1));
         break;
       case 'exhibitor_desc':
         result.sort((a, b) => b.chineseExhibitorCount - a.chineseExhibitorCount);
@@ -77,20 +89,14 @@ export default function ExposPage() {
         break;
       case 'date_desc':
       default:
-        result.sort((a, b) => safeDate(b.startDate) - safeDate(a.startDate));
+        result.sort((a, b) => compareDatesDesc(a.startDate, b.startDate));
         break;
     }
 
     return result;
   }, [allExpos, keyword, selectedTypes, location, sortBy, onlyFavorites, isFavorited]);
 
-  const handleReset = () => {
-    setKeyword('');
-    setSelectedTypes([]);
-    setLocation('all');
-    setSortBy('date_desc');
-    setOnlyFavorites(false);
-  };
+  const handleReset = () => setSearchParams(new URLSearchParams(), { replace: true });
 
   return (
     <div className="space-y-8 md:space-y-10">

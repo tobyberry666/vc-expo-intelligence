@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CalendarDays, MapPin, Users, ArrowRight, CalendarClock, Sparkles } from 'lucide-react';
 
@@ -31,6 +31,7 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 
 function ExpoGridSection({ expos }: ExpoGridSectionProps) {
   const navigate = useNavigate();
+  const { search } = useLocation();
 
   if (expos.length === 0) {
     return (
@@ -53,7 +54,8 @@ function ExpoGridSection({ expos }: ExpoGridSectionProps) {
         >
           <Card
             className="group overflow-hidden border-border/40 bg-card/60 hover:bg-card/80 hover-elevate transition-colors cursor-pointer"
-            onClick={() => navigate(`/expos/${expo.id}`)}
+            onClick={() => navigate(`/expos/${expo.id}${search}`)}
+                    role="link" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter' && event.target === event.currentTarget) navigate(`/expos/${expo.id}${search}`); }}
           >
             {/* Cover image */}
             <div className="relative aspect-[16/9] overflow-hidden bg-muted">

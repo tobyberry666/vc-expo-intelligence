@@ -36,18 +36,22 @@ export default memo(function LiveIndicator({
 }: LiveIndicatorProps) {
   return (
     <div
+      role="status"
+      aria-live="polite"
       className={cn(
         'inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-card border border-border/40 text-xs',
-        className
+        className,
       )}
     >
       {isLoading ? (
         <>
           <RefreshCw className="size-3.5 text-primary animate-spin" />
           <span className="text-primary font-medium">
-            {phase === 'searching' ? '正在并行搜索 15 路情报源…'
-              : phase === 'extracting' ? '正在 AI 结构化提取…'
-              : '正在搜索全网最新情报...'}
+            {phase === 'searching'
+              ? '正在执行 15 个检索任务…'
+              : phase === 'extracting'
+                ? '正在 AI 结构化提取…'
+                : '正在搜索全网最新情报...'}
           </span>
         </>
       ) : error ? (
@@ -88,6 +92,9 @@ export default memo(function LiveIndicator({
         <>
           <AlertCircle className="size-3.5 text-muted-foreground" />
           <span className="text-muted-foreground">等待数据加载</span>
+          <Button variant="ghost" size="sm" onClick={onRefresh}>
+            刷新
+          </Button>
         </>
       )}
     </div>

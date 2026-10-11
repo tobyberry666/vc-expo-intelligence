@@ -58,7 +58,7 @@ export default function HomePage() {
                   ? phase === 'searching' ? '正在搜索投资情报…'
                   : phase === 'extracting' ? '正在结构化提取…'
                   : '搜索中...'
-                  : '实时追踪中'}
+                  : error ? '数据获取受限' : lastUpdate ? '已载入情报' : '等待情报'}
               </span>
               <span className="px-2.5 py-1 rounded-full bg-card border border-border/40">
                 {today}

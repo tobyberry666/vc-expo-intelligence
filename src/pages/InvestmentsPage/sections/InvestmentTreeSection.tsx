@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { compareDatesDesc } from '@/features/feed/dates';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Building2, Layers, ChevronRight, Star, TrendingUp, Calendar, Sparkles } from 'lucide-react';
 import {
   Accordion,
@@ -31,6 +32,7 @@ export default function InvestmentTreeSection({
   onToggleFavorite,
 }: InvestmentTreeSectionProps) {
   const navigate = useNavigate();
+  const { search } = useLocation();
 
   const grouped = useMemo<InstitutionGroup[]>(() => {
     const instMap = new Map<string, Map<string, IInvestment[]>>();
@@ -49,7 +51,7 @@ export default function InvestmentTreeSection({
     return Array.from(instMap.entries()).map(([institution, sectorMap]) => {
       const sectors = Array.from(sectorMap.entries()).map(([sector, invs]) => ({
         sector,
-        investments: invs.sort((a, b) => b.date.localeCompare(a.date)),
+        investments: invs.sort((a, b) => compareDatesDesc(a.date, b.date)),
       }));
       return {
         institution,
@@ -136,7 +138,8 @@ export default function InvestmentTreeSection({
                             <div
                               key={inv.id}
                               className="group relative flex items-start gap-3 p-2.5 rounded-lg hover:bg-accent/40 transition-colors cursor-pointer"
-                              onClick={() => navigate(`/investments/${inv.id}`)}
+                              onClick={() => navigate(`/investments/${inv.id}${search}`)}
+                    role="link" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter' && event.target === event.currentTarget) navigate(`/investments/${inv.id}${search}`); }}
                             >
                               <div className="size-5 mt-0.5 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0">
                                 <TrendingUp className="size-3" />

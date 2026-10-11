@@ -5,6 +5,7 @@ import { Calendar, TrendingUp, MapPin, Building2, Star, Loader2, Sparkles } from
 import { type LiveInvestmentItem, type LiveExpoItem } from '@/hooks/useLiveFeed';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { compareDatesDesc } from '@/features/feed/dates';
 import { useFavorites } from '@/hooks/useFavorites';
 
 interface FeedItem {
@@ -63,7 +64,7 @@ export default function RecentFeedSection({
       if (!aValid && bValid) return 1;
       if (aValid && !bValid) return -1;
       if (!aValid && !bValid) return 0;
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
+      return compareDatesDesc(a.date, b.date);
     });
   }, [liveInvestments, liveExpos]);
 

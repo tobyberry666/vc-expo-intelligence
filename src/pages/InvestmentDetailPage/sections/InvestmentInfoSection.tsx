@@ -1,4 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import {
   ArrowLeft,
@@ -33,7 +33,7 @@ interface InvestmentInfoSectionProps {
 }
 
 export default function InvestmentInfoSection({ investment }: InvestmentInfoSectionProps) {
-  const navigate = useNavigate();
+  const { search } = useLocation();
   const { isFavorited, toggleFavorite } = useFavorites();
   const favorited = isFavorited(investment.id, 'investment');
 
@@ -43,7 +43,7 @@ export default function InvestmentInfoSection({ investment }: InvestmentInfoSect
     { icon: TrendingUp, label: '融资轮次', value: investment.round },
     { icon: DollarSign, label: '融资金额', value: investment.amount },
     { icon: Calendar, label: '投资日期', value: investment.date },
-    { icon: MapPin, label: '信息来源', value: '全球创投情报库' },
+    { icon: MapPin, label: '信息来源', value: 'AI 搜索提取（需核验）' },
   ];
 
   return (
@@ -60,7 +60,7 @@ export default function InvestmentInfoSection({ investment }: InvestmentInfoSect
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/investments">投资事件</Link>
+                <Link to={`/investments${search}`}>投资事件</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -74,11 +74,10 @@ export default function InvestmentInfoSection({ investment }: InvestmentInfoSect
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate(-1)}
+          asChild
           className="gap-1.5 text-muted-foreground hover:text-foreground"
         >
-          <ArrowLeft className="size-4" />
-          返回列表
+          <Link to={`/investments${search}`}><ArrowLeft className="size-4" />返回列表</Link>
         </Button>
 
         {/* Hero card */}
@@ -175,7 +174,7 @@ export default function InvestmentInfoSection({ investment }: InvestmentInfoSect
                 onClick={() => {
                   toggleFavorite(investment.id, 'investment');
                   const nowFav = !isFavorited(investment.id, 'investment');
-                  toast.success(nowFav ? `已开启跟踪「${investment.company}」` : `已取消跟踪「${investment.company}」`);
+                  toast.success(nowFav ? `已收藏「${investment.company}」` : `已取消收藏「${investment.company}」`);
                 }}
               >
                 <TrendingUp className="size-3.5" />
