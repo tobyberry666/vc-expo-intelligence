@@ -10,5 +10,8 @@ export interface IExpo {
   imageUrl: string
   description: string
   exhibitors?: string[]
+  sourceName?: string
+  sourceUrl?: string
+  exhibitorCountKnown?: boolean
   source?: 'live'
 }

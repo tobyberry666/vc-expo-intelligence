@@ -51,14 +51,14 @@ export default memo(function AiIntelligenceSection({
             </div>
             <div>
               <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-                AI 实时情报
+                创投与展会情报
                 <Badge variant="outline" className="text-primary border-primary/30 text-xs">
                   <Sparkles className="size-3 mr-1" />
                   LIVE
                 </Badge>
               </h2>
               <p className="text-sm text-muted-foreground mt-0.5">
-                AI 全网搜索最新创投与展会动态
+                公开来源定时更新 · 点击详情核验原文
               </p>
             </div>
           </div>

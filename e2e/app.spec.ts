@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 import { fixtureCache } from '../tests/fixtures';
+test.beforeEach(async ({ page }) => {
+  await page.route('**/data/feed.json', (route) =>
+    route.fulfill({ status: 503, body: 'unavailable' }),
+  );
+});
 
 test('cached investment browsing, URL filters, legacy detail links and reload', async ({
   page,
@@ -63,17 +68,17 @@ test('blocked browser storage does not crash the application', async ({
     });
   });
   await page.goto('investments');
-  await expect(page.getByText(/实时情报需在妙搭平台运行/)).toBeVisible();
+  await expect(page.getByText(/实时情报获取失败/)).toBeVisible();
   expect(errors).toEqual([]);
 });
-test('standalone empty and corrupt caches explain platform requirements without crashing', async ({
+test('standalone empty and corrupt caches explain data failures without crashing', async ({
   page,
 }) => {
   await page.addInitScript(() =>
     localStorage.setItem('__live_feed_cache', '{broken'),
   );
   await page.goto('investments');
-  await expect(page.getByText(/实时情报需在妙搭平台运行/)).toBeVisible();
+  await expect(page.getByText(/实时情报获取失败/)).toBeVisible();
   await expect(page.getByRole('button', { name: '重试' })).toBeEnabled();
 });
 test('mobile navigation and unknown routes remain usable', async ({ page }) => {

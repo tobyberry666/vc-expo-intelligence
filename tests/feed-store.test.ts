@@ -8,6 +8,30 @@ const data = (summary = 'good'): FeedResult => ({
   liveExpos: [],
   warning: null,
 });
+it('preserves snapshot collection time rather than browser fetch time', async () => {
+  const timestamp = Date.now() - 7200000;
+  const store = createFeedStore(
+    async () => ({ ...data(), updatedAt: timestamp }),
+    storage(),
+    0,
+  );
+  await store.refresh();
+  expect(store.getSnapshot().lastUpdate).toBe(timestamp);
+  expect(store.getCache()?.timestamp).toBe(timestamp);
+});
+it('authoritative snapshots remove expired events instead of retaining old entries', async () => {
+  const { fixtureCache } = await import('./fixtures');
+  const map = storage();
+  map.setItem('__live_feed_cache', JSON.stringify(fixtureCache()));
+  const store = createFeedStore(
+    async () => ({ ...data(), updatedAt: Date.now() }),
+    map,
+    0,
+  );
+  await store.refresh();
+  expect(store.getSnapshot().liveExpos).toEqual([]);
+  expect(store.getSnapshot().liveInvestments).toEqual([]);
+});
 function storage() {
   const map = new Map<string, string>();
   return {

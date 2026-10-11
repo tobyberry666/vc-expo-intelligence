@@ -9,5 +9,8 @@ export interface IInvestment {
   date: string
   summary: string
   imageUrl: string
+  sourceName?: string
+  sourceUrl?: string
+  exhibitorCountKnown?: boolean
   source?: 'live'
 }

@@ -21,6 +21,7 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci --ignore-scripts
+      - run: python -m unittest discover -s tests -p test_collect_feed.py
       - run: npm run check
       - run: npm run build:platform
       - run: npm run audit:check

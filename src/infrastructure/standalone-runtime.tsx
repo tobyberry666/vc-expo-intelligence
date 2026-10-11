@@ -1,4 +1,5 @@
 import type { PropsWithChildren } from 'react';
+export const publicFeed: boolean = true;
 
 export function AppContainer({ children }: PropsWithChildren) {
   return children;

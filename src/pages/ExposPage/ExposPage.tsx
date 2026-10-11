@@ -110,7 +110,7 @@ export default function ExposPage() {
                 科技展会
               </h1>
               <p className="mt-2 text-muted-foreground text-base max-w-2xl">
-                追踪 CES、MWC、WAIC 等全球顶级科技展会，一览中国企业参展动态
+                追踪 CES、MWC、汉诺威等科技展会，日程可核验，未披露字段不推测
               </p>
             </div>
             <LiveIndicator
@@ -135,7 +135,7 @@ export default function ExposPage() {
               >
                 <div className="flex items-center gap-2">
                   <Brain className="size-4 text-primary" />
-                  <span className="text-sm font-semibold text-foreground">AI 实时展会情报</span>
+                  <span className="text-sm font-semibold text-foreground">官方展会日程</span>
                   <Badge variant="outline" className="text-primary border-primary/30 text-xs gap-0.5">
                     <Sparkles className="size-2.5" />
                     LIVE
@@ -209,10 +209,10 @@ export default function ExposPage() {
                     <Loader2 className="size-7 text-primary animate-spin" />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground mb-1">
-                    正在搜索全网最新数据...
+                    正在获取最新数据…
                   </h3>
                   <p className="text-sm text-muted-foreground max-w-sm">
-                    正在并行搜索全球科技展会最新情报，预计需要 10-15 秒
+                    正在获取展会日程…
                   </p>
                 </div>
               ) : (

@@ -141,7 +141,7 @@ export default function InvestmentTimelineSection({
                                 {(inv.source === 'live' || inv.id.startsWith('live-')) && (
                                   <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-primary border-primary/30 gap-0.5 shrink-0">
                                     <Sparkles className="size-2" />
-                                    AI实时
+                                    情报
                                   </Badge>
                                 )}
                               </div>

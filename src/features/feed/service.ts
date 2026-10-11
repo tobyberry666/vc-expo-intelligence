@@ -14,6 +14,7 @@ import {
 } from './parsers';
 export interface FeedResult extends FeedData {
   warning: string | null;
+  updatedAt?: number;
 }
 export async function fetchFeed(
   provider: FeedProvider,

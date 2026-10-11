@@ -42,8 +42,8 @@ export default function InvestmentInfoSection({ investment }: InvestmentInfoSect
     { icon: Layers, label: '所属赛道', value: investment.sector },
     { icon: TrendingUp, label: '融资轮次', value: investment.round },
     { icon: DollarSign, label: '融资金额', value: investment.amount },
-    { icon: Calendar, label: '投资日期', value: investment.date },
-    { icon: MapPin, label: '信息来源', value: 'AI 搜索提取（需核验）' },
+    { icon: Calendar, label: investment.sourceUrl ? '披露日期' : '投资日期', value: investment.date },
+    { icon: MapPin, label: '信息来源', value: investment.sourceName ?? 'AI 搜索提取（需核验）' },
   ];
 
   return (
@@ -154,6 +154,7 @@ export default function InvestmentInfoSection({ investment }: InvestmentInfoSect
               </p>
             </div>
 
+            {investment.sourceUrl && <a href={investment.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline">查看原文 · {investment.sourceName}</a>}
             {/* Action bar */}
             <div className="flex flex-wrap items-center gap-2 pt-2">
               <Button
