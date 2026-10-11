@@ -1,5 +1,5 @@
 {
-  "updatedAt": 1791731648588,
+  "updatedAt": 1791732605336,
   "fullSummary": "## 投融资动态\n公开来源披露的融资事件；日期为报道发布日期，未披露字段不推测。点击详情的原文链接核验。\n\n## 科技展会\n展会日程经主办方官方网站核验，中国参展企业数量与名单尚未披露。统计仅覆盖本站采集来源，不代表全市场。",
   "liveInvestments": [
     {
@@ -56,7 +56,7 @@
       "exhibitors": [],
       "source": "live",
       "sourceName": "CES 主办方",
-      "sourceUrl": "https://www.ces.tech/attend/registration-notification"
+      "sourceUrl": "https://exhibitors.ces.tech/8_0/index.cfm"
     },
     {
       "id": "mwc-2027",
@@ -93,17 +93,44 @@
     {
       "name": "TechCrunch",
       "url": "https://techcrunch.com/category/venture/feed/",
-      "status": "ok"
+      "status": "ok",
+      "checkedAt": 1791732605336,
+      "lastSuccessAt": 1791732605336
     },
     {
       "name": "TechCrunch",
       "url": "https://techcrunch.com/feed/",
-      "status": "ok"
+      "status": "ok",
+      "checkedAt": 1791732605336,
+      "lastSuccessAt": 1791732605336
     },
     {
       "name": "Type One Energy",
       "url": "https://typeoneenergy.com/feed/",
-      "status": "ok"
+      "status": "ok",
+      "checkedAt": 1791732605336,
+      "lastSuccessAt": 1791732605336
+    },
+    {
+      "name": "CES 主办方",
+      "url": "https://exhibitors.ces.tech/8_0/index.cfm",
+      "status": "ok",
+      "checkedAt": 1791732605336,
+      "lastSuccessAt": 1791732605336
+    },
+    {
+      "name": "GSMA 主办方",
+      "url": "https://www.mwcbarcelona.com/",
+      "status": "ok",
+      "checkedAt": 1791732605336,
+      "lastSuccessAt": 1791732605336
+    },
+    {
+      "name": "HANNOVER MESSE 主办方",
+      "url": "https://www.hannovermesse.de/de/fuer-besucher/oeffnungszeiten/",
+      "status": "ok",
+      "checkedAt": 1791732605336,
+      "lastSuccessAt": 1791732605336
     }
   ],
   "warning": null

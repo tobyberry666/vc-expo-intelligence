@@ -23,7 +23,7 @@ export async function fetchPublicFeed(
   if (text.length > 2000000) throw new Error('数据超过大小限制');
   const data = snapshotSchema.parse(JSON.parse(text));
   if (data.updatedAt > Date.now() + 300000) throw new Error('数据时间无效');
-  const stale = Date.now() - data.updatedAt > 48 * 3600000;
+  const stale = Date.now() - data.updatedAt > 3 * 3600000;
   return {
     ...data,
     liveInvestments: data.liveInvestments.map((item) => ({
@@ -31,6 +31,8 @@ export async function fetchPublicFeed(
       id: investmentId(item),
     })),
     liveExpos: data.liveExpos.map((item) => ({ ...item, id: expoId(item) })),
-    warning: stale ? '数据已超过 48 小时未更新，请核对来源' : data.warning,
+    warning: stale
+      ? '数据已超过 3 小时未采集，更新可能延迟，请核对来源'
+      : data.warning,
   };
 }

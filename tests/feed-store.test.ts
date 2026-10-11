@@ -1,4 +1,5 @@
-import { expect, it, vi } from 'vitest';
+import { expect, it, vi, afterEach } from 'vitest';
+afterEach(() => vi.useRealTimers());
 import { createFeedStore } from '../src/features/feed/store';
 import type { FeedResult } from '../src/features/feed/service';
 
@@ -7,6 +8,22 @@ const data = (summary = 'good'): FeedResult => ({
   liveInvestments: [],
   liveExpos: [],
   warning: null,
+});
+it('polls once per store and stops after the last subscriber leaves', async () => {
+  vi.useFakeTimers();
+  const loader = vi.fn().mockResolvedValue(data());
+  const store = createFeedStore(loader, storage(), 0, 1000);
+  const offOne = store.subscribe(() => {});
+  const offTwo = store.subscribe(() => {});
+  await store.ensureLoaded();
+  await vi.advanceTimersByTimeAsync(1000);
+  expect(loader).toHaveBeenCalledTimes(2);
+  offOne();
+  await vi.advanceTimersByTimeAsync(1000);
+  expect(loader).toHaveBeenCalledTimes(3);
+  offTwo();
+  await vi.advanceTimersByTimeAsync(3000);
+  expect(loader).toHaveBeenCalledTimes(3);
 });
 it('preserves snapshot collection time rather than browser fetch time', async () => {
   const timestamp = Date.now() - 7200000;

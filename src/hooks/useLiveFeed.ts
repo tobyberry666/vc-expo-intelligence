@@ -22,6 +22,7 @@ const feedStore = createFeedStore(
     publicFeed ? fetchPublicFeed(signal) : fetchFeed(provider, signal, onPhase),
   scopedStorage,
   publicFeed ? 0 : undefined,
+  publicFeed ? 5 * 60000 : 0,
 );
 
 export function useLiveFeed() {
