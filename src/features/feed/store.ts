@@ -13,12 +13,14 @@ export function createFeedStore(
   loader: FeedLoader,
   storage: StoragePort,
   cacheTTL = CACHE_TTL,
+  pollIntervalMs = 0,
 ) {
   let cache = readFeedCache(storage, true);
   let controller: AbortController | null = null;
   let generation = 0;
   let initialized = false;
   let pending: Promise<void> | null = null;
+  let pollTimer: ReturnType<typeof setInterval> | null = null;
   const listeners = new Set<() => void>();
   const resolveItemId = (id: string, type: 'investment' | 'expo') =>
     cache?.legacyIds[`${type}:${id}`] ?? id;
@@ -143,10 +145,20 @@ export function createFeedStore(
     getCache: (): CacheData | null => cache,
     subscribe: (listener: () => void) => {
       listeners.add(listener);
+      if (pollIntervalMs > 0 && pollTimer === null) {
+        pollTimer = setInterval(() => {
+          if (listeners.size && !controller) void refresh();
+        }, pollIntervalMs);
+      }
       return () => {
         listeners.delete(listener);
         // StrictMode immediately resubscribes. Cancel only when truly unused.
         queueMicrotask(() => {
+          if (!listeners.size && pollTimer !== null) {
+            clearInterval(pollTimer);
+            pollTimer = null;
+            initialized = false;
+          }
           if (!listeners.size && controller) {
             initialized = false;
             controller.abort();

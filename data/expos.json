@@ -12,7 +12,8 @@
     "exhibitors": [],
     "source": "live",
     "sourceName": "CES 主办方",
-    "sourceUrl": "https://www.ces.tech/attend/registration-notification"
+    "sourceUrl": "https://exhibitors.ces.tech/8_0/index.cfm",
+    "identityDate": "2027-01-06"
   },
   {
     "id": "mwc-2027",
@@ -27,7 +28,8 @@
     "exhibitors": [],
     "source": "live",
     "sourceName": "GSMA 主办方",
-    "sourceUrl": "https://www.mwcbarcelona.com/"
+    "sourceUrl": "https://www.mwcbarcelona.com/",
+    "identityDate": "2027-03-01"
   },
   {
     "id": "hannover-2027",
@@ -42,6 +44,7 @@
     "exhibitors": [],
     "source": "live",
     "sourceName": "HANNOVER MESSE 主办方",
-    "sourceUrl": "https://www.hannovermesse.de/de/fuer-besucher/oeffnungszeiten/"
+    "sourceUrl": "https://www.hannovermesse.de/de/fuer-besucher/oeffnungszeiten/",
+    "identityDate": "2027-04-05"
   }
 ]

@@ -1,4 +1,60 @@
 import { expect, test } from '@playwright/test';
+test('official date corrections preserve existing detail links and favorites', async ({
+  page,
+}) => {
+  let reads = 0;
+  await page.route('**/data/feed.json', async (route) => {
+    const response = await route.fetch();
+    const data = await response.json();
+    data.updatedAt = Date.now();
+    if (++reads > 1)
+      data.liveExpos.find(
+        (expo: { name: string }) => expo.name === 'CES 2027',
+      ).startDate = '2027-01-07';
+    await route.fulfill({ json: data });
+  });
+  await page.goto('./');
+  await page.getByRole('heading', { name: 'CES 2027', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'CES 2027', exact: true }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: '收藏', exact: true }).click();
+  const originalUrl = page.url();
+  await page.getByRole('button', { name: '刷新', exact: true }).click();
+  await expect(
+    page.getByText('2027-01-07 — 2027-01-09', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: '已收藏', exact: true }),
+  ).toBeVisible();
+  expect(page.url()).toBe(originalUrl);
+  await page.reload();
+  await expect(
+    page.getByRole('heading', { name: 'CES 2027', exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: '已收藏', exact: true }),
+  ).toBeVisible();
+});
+test('open pages automatically recheck snapshots without manual reload', async ({
+  page,
+}) => {
+  await page.clock.install();
+  let requests = 0;
+  await page.route('**/data/feed.json', async (route) => {
+    requests++;
+    const response = await route.fetch();
+    const data = await response.json();
+    data.updatedAt = Date.now(); // This polling test controls freshness independently of the seed age.
+    if (requests > 1) data.warning = '测试更新提示：第二次快照已载入';
+    await route.fulfill({ json: data });
+  });
+  await page.goto('./');
+  await expect(page.getByRole('heading', { name: /Vesta 完成/ })).toBeVisible();
+  await page.clock.runFor(5 * 60000);
+  await expect(page.getByText('测试更新提示：第二次快照已载入')).toBeVisible();
+  expect(requests).toBe(2);
+});
 
 test('fresh browser loads actual public snapshot and opens attributed details', async ({
   page,
@@ -27,9 +83,25 @@ test('fresh browser loads actual public snapshot and opens attributed details', 
   await expect(
     page.getByRole('heading', { name: 'Vesta', exact: true }),
   ).toBeVisible();
-  await page.getByRole('button', { name: '刷新', exact: true }).click();
+  await page.getByRole('button', { name: /^(刷新|重试)$/ }).click();
   await expect(
     page.getByRole('heading', { name: 'Vesta', exact: true }),
   ).toBeVisible();
   expect(errors).toEqual([]);
+});
+test('stale snapshots retain records and visibly warn instead of pretending to be current', async ({
+  page,
+}) => {
+  await page.route('**/data/feed.json', async (route) => {
+    const response = await route.fetch();
+    const data = await response.json();
+    data.updatedAt = Date.now() - 4 * 3600000;
+    await route.fulfill({ json: data });
+  });
+  await page.goto('./');
+  await expect(page.getByText(/数据已超过 3 小时未采集/)).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Vesta 完成/ })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: '重试', exact: true }),
+  ).toBeEnabled();
 });

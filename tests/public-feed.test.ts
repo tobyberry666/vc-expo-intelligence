@@ -31,14 +31,14 @@ it('loads valid records with canonical IDs and original collection time', async 
   expect(result.warning).toBeNull();
 });
 it('warns about stale data without pretending it is fresh', async () => {
-  const data = snapshot(Date.now() - 72 * 3600000);
+  const data = snapshot(Date.now() - 4 * 3600000);
   vi.stubGlobal(
     'fetch',
     vi.fn().mockResolvedValue(new Response(JSON.stringify(data))),
   );
   const result = await fetchPublicFeed(new AbortController().signal);
   expect(result.updatedAt).toBe(data.updatedAt);
-  expect(result.warning).toContain('48 小时');
+  expect(result.warning).toContain('3 小时');
 });
 it('rejects future timestamps, unsafe URLs and oversized responses', async () => {
   for (const data of [

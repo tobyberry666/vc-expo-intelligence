@@ -16,3 +16,13 @@ it('uses route-safe stable identities independent of list position', () => {
     expoId({ name: 'CES 2027', startDate: '2027-01-06' }),
   );
 });
+it('keeps a public event identity when its official schedule changes', () => {
+  const event = {
+    name: 'CES 2027',
+    startDate: '2027-01-06',
+    identityDate: '2027-01-06',
+  };
+  const original = expoId(event);
+  expect(expoId({ ...event, startDate: '2027-01-07' })).toBe(original);
+  expect(original).toBe(expoId({ name: 'CES 2027', startDate: '2027-01-06' }));
+});

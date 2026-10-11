@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { RefreshCw, Wifi, WifiOff, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { publicFeed } from '@/infrastructure/runtime';
 
 import type { FeedPhase } from '@/hooks/useLiveFeed';
 
@@ -72,8 +73,11 @@ export default memo(function LiveIndicator({
         <>
           <Wifi className="size-3.5 text-primary" />
           <span className="text-foreground">
-            数据更新于{' '}
-            <span className="font-medium text-primary">
+            {publicFeed ? '最近采集检查：' : '数据更新于 '}
+            <span
+              className="font-medium text-primary"
+              title={new Date(lastUpdate).toLocaleString()}
+            >
               {formatTimeSince(lastUpdate)}
             </span>
           </span>

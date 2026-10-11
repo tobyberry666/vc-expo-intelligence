@@ -24,6 +24,7 @@ export const expoSchema = z.object({
   name: field.min(2),
   type: z.enum(['consumer', 'ai', 'auto', 'industrial']),
   startDate: field,
+  identityDate: field.optional(),
   endDate: field,
   location: field,
   chineseExhibitorCount: z.number().int().nonnegative().max(1000000),
