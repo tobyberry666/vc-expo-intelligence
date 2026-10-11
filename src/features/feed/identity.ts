@@ -23,6 +23,12 @@ export function investmentId(
     item.date,
   ]);
 }
-export function expoId(item: Pick<LiveExpoItem, 'name' | 'startDate'>): string {
-  return identity('live-expo', [item.name, item.startDate]);
+export function expoId(
+  item: Pick<LiveExpoItem, 'name' | 'startDate' | 'identityDate'>,
+): string {
+  // Public catalogs keep the first verified date as an immutable identity anchor.
+  return identity('live-expo', [
+    item.name,
+    item.identityDate ?? item.startDate,
+  ]);
 }

@@ -1,4 +1,41 @@
 import { expect, test } from '@playwright/test';
+test('official date corrections preserve existing detail links and favorites', async ({
+  page,
+}) => {
+  let reads = 0;
+  await page.route('**/data/feed.json', async (route) => {
+    const response = await route.fetch();
+    const data = await response.json();
+    data.updatedAt = Date.now();
+    if (++reads > 1)
+      data.liveExpos.find(
+        (expo: { name: string }) => expo.name === 'CES 2027',
+      ).startDate = '2027-01-07';
+    await route.fulfill({ json: data });
+  });
+  await page.goto('./');
+  await page.getByRole('heading', { name: 'CES 2027', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'CES 2027', exact: true }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: '收藏', exact: true }).click();
+  const originalUrl = page.url();
+  await page.getByRole('button', { name: '刷新', exact: true }).click();
+  await expect(
+    page.getByText('2027-01-07 — 2027-01-09', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: '已收藏', exact: true }),
+  ).toBeVisible();
+  expect(page.url()).toBe(originalUrl);
+  await page.reload();
+  await expect(
+    page.getByRole('heading', { name: 'CES 2027', exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: '已收藏', exact: true }),
+  ).toBeVisible();
+});
 test('open pages automatically recheck snapshots without manual reload', async ({
   page,
 }) => {

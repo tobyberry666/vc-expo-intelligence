@@ -32,3 +32,5 @@ Pages 设置使用 GitHub Actions，工作流 `.github/workflows/pages.yml`：ma
 快照 `sources` 为新闻和展会来源记录 `checkedAt`（本次检查）、`lastSuccessAt`（最后成功）及状态。某源失败不会把它的最后成功时间改成当前时间。全部新闻源失败终止发布并保留线上版本；超过三小时无新采集会在网页提示延迟。
 
 GitHub [官方文档](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule) 说明定时任务可能延迟或遗漏，公开仓库无活动 60 天会停用定时工作流。因此这是一小时更新目标，不是绝对实时服务保障。仓库维护者需要关注 Actions 失败通知和定时任务启用状态；不可把采集频率等同全网覆盖率。融资仅覆盖现有公开 RSS 可识别标题，中国机构覆盖有限；新展会年度和展商名单仍须核验。
+
+同一年度展会的 `identityDate` 保持第一次核实的日期，只用于稳定 ID；官网更新修改 `startDate/endDate`，不修改身份锚点，因此已保存的详情链接和收藏仍有效。
