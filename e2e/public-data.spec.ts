@@ -8,6 +8,7 @@ test('open pages automatically recheck snapshots without manual reload', async (
     requests++;
     const response = await route.fetch();
     const data = await response.json();
+    data.updatedAt = Date.now(); // This polling test controls freshness independently of the seed age.
     if (requests > 1) data.warning = '测试更新提示：第二次快照已载入';
     await route.fulfill({ json: data });
   });
@@ -45,9 +46,25 @@ test('fresh browser loads actual public snapshot and opens attributed details', 
   await expect(
     page.getByRole('heading', { name: 'Vesta', exact: true }),
   ).toBeVisible();
-  await page.getByRole('button', { name: '刷新', exact: true }).click();
+  await page.getByRole('button', { name: /^(刷新|重试)$/ }).click();
   await expect(
     page.getByRole('heading', { name: 'Vesta', exact: true }),
   ).toBeVisible();
   expect(errors).toEqual([]);
+});
+test('stale snapshots retain records and visibly warn instead of pretending to be current', async ({
+  page,
+}) => {
+  await page.route('**/data/feed.json', async (route) => {
+    const response = await route.fetch();
+    const data = await response.json();
+    data.updatedAt = Date.now() - 4 * 3600000;
+    await route.fulfill({ json: data });
+  });
+  await page.goto('./');
+  await expect(page.getByText(/数据已超过 3 小时未采集/)).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Vesta 完成/ })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: '重试', exact: true }),
+  ).toBeEnabled();
 });
