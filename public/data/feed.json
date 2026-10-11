@@ -1,0 +1,110 @@
+{
+  "updatedAt": 1791731648588,
+  "fullSummary": "## 投融资动态\n公开来源披露的融资事件；日期为报道发布日期，未披露字段不推测。点击详情的原文链接核验。\n\n## 科技展会\n展会日程经主办方官方网站核验，中国参展企业数量与名单尚未披露。统计仅覆盖本站采集来源，不代表全市场。",
+  "liveInvestments": [
+    {
+      "id": "public-2da938bd0c484285036b354a205507a47910abf182754ca3ccf2e6bece3bd133",
+      "company": "Vesta",
+      "institution": "未披露",
+      "sector": "其他",
+      "round": "未披露",
+      "amount": "$30M",
+      "date": "2026-10-08",
+      "summary": "TechCrunch 公开披露融资，金额 $30M。日期为报道发布日期；投资机构及其他字段以原文为准。",
+      "source": "live",
+      "sourceName": "TechCrunch",
+      "sourceUrl": "https://techcrunch.com/2026/10/08/vesta-raises-30m-as-lenders-adopt-ai-agents/"
+    },
+    {
+      "id": "public-46ff3746c33cef7f7c12556c65c7d2238bc22c7a11b43f92f1ac25b914988692",
+      "company": "Mecka AI",
+      "institution": "Sequoia",
+      "sector": "其他",
+      "round": "未披露",
+      "amount": "$60M",
+      "date": "2026-10-07",
+      "summary": "TechCrunch 公开披露融资，金额 $60M。日期为报道发布日期；投资机构及其他字段以原文为准。",
+      "source": "live",
+      "sourceName": "TechCrunch",
+      "sourceUrl": "https://techcrunch.com/2026/10/07/robot-data-startup-mecka-ai-nabs-60m-from-sequoia/"
+    },
+    {
+      "id": "public-34ffa38c32cfe11099a5dbd8adc558a043ba839a3cfb076596784f73dd9e4543",
+      "company": "Type One Energy",
+      "institution": "未披露",
+      "sector": "其他",
+      "round": "Series B",
+      "amount": "$200M",
+      "date": "2026-10-06",
+      "summary": "Type One Energy 公开披露融资，金额 $200M。日期为报道发布日期；投资机构及其他字段以原文为准。",
+      "source": "live",
+      "sourceName": "Type One Energy",
+      "sourceUrl": "https://typeoneenergy.com/insights-announcements/type-one-energy-completes-200m-series-b-financing/"
+    }
+  ],
+  "liveExpos": [
+    {
+      "id": "ces-2027",
+      "name": "CES 2027",
+      "type": "consumer",
+      "startDate": "2027-01-06",
+      "endDate": "2027-01-09",
+      "location": "美国 · 拉斯维加斯",
+      "chineseExhibitorCount": 0,
+      "exhibitorCountKnown": false,
+      "description": "消费电子与科技展会。日程由 CES 官方公布；中国展商数量和名单未核实。",
+      "exhibitors": [],
+      "source": "live",
+      "sourceName": "CES 主办方",
+      "sourceUrl": "https://www.ces.tech/attend/registration-notification"
+    },
+    {
+      "id": "mwc-2027",
+      "name": "MWC Barcelona 2027",
+      "type": "consumer",
+      "startDate": "2027-03-01",
+      "endDate": "2027-03-04",
+      "location": "西班牙 · 巴塞罗那",
+      "chineseExhibitorCount": 0,
+      "exhibitorCountKnown": false,
+      "description": "移动通信行业大会。日程由 GSMA 官方公布；中国展商数量和名单未核实。",
+      "exhibitors": [],
+      "source": "live",
+      "sourceName": "GSMA 主办方",
+      "sourceUrl": "https://www.mwcbarcelona.com/"
+    },
+    {
+      "id": "hannover-2027",
+      "name": "HANNOVER MESSE 2027",
+      "type": "industrial",
+      "startDate": "2027-04-05",
+      "endDate": "2027-04-08",
+      "location": "德国 · 汉诺威",
+      "chineseExhibitorCount": 0,
+      "exhibitorCountKnown": false,
+      "description": "工业技术展会。日程由汉诺威展会官方公布；中国展商数量和名单未核实。",
+      "exhibitors": [],
+      "source": "live",
+      "sourceName": "HANNOVER MESSE 主办方",
+      "sourceUrl": "https://www.hannovermesse.de/de/fuer-besucher/oeffnungszeiten/"
+    }
+  ],
+  "sources": [
+    {
+      "name": "TechCrunch",
+      "url": "https://techcrunch.com/category/venture/feed/",
+      "status": "ok"
+    },
+    {
+      "name": "TechCrunch",
+      "url": "https://techcrunch.com/feed/",
+      "status": "ok"
+    },
+    {
+      "name": "Type One Energy",
+      "url": "https://typeoneenergy.com/feed/",
+      "status": "ok"
+    }
+  ],
+  "warning": null
+}

@@ -48,10 +48,10 @@ export default memo(function LiveIndicator({
           <RefreshCw className="size-3.5 text-primary animate-spin" />
           <span className="text-primary font-medium">
             {phase === 'searching'
-              ? '正在执行 15 个检索任务…'
+              ? '正在获取最新情报…'
               : phase === 'extracting'
                 ? '正在 AI 结构化提取…'
-                : '正在搜索全网最新情报...'}
+                : '正在获取最新情报…'}
           </span>
         </>
       ) : error ? (

@@ -51,7 +51,7 @@ export default function RecentFeedSection({
       id: `live-expo-${exp.id}`,
       type: 'expo' as const,
       title: exp.name,
-      subtitle: `${exp.chineseExhibitorCount} 家中国企业参展`,
+      subtitle: exp.exhibitorCountKnown === false ? '中国展商数量未披露' : `${exp.chineseExhibitorCount} 家中国企业参展`,
       date: exp.startDate,
       tag: exp.location,
       tagVariant: 'secondary' as const,
@@ -134,7 +134,7 @@ export default function RecentFeedSection({
                         {item.isLive && (
                           <Badge variant="outline" className="shrink-0 text-xs text-primary border-primary/30 gap-0.5">
                             <Sparkles className="size-2.5" />
-                            AI实时
+                            情报
                           </Badge>
                         )}
                       </div>

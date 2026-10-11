@@ -126,6 +126,7 @@ export default function ExpoInfoSection({ expo }: ExpoInfoSectionProps) {
 
           <Separator className="bg-border/40" />
 
+          {expo.sourceUrl && <a href={expo.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline">查看主办方官网 · {expo.sourceName}</a>}
           {/* Detail grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Date */}
@@ -160,7 +161,7 @@ export default function ExpoInfoSection({ expo }: ExpoInfoSectionProps) {
               <div className="min-w-0">
                 <p className="text-xs text-muted-foreground mb-0.5">中国参展企业</p>
                 <p className="text-sm font-medium text-foreground">
-                  <span className="text-lg font-bold tabular-nums">{expo.chineseExhibitorCount}</span> 家
+                  <span className="text-lg font-bold tabular-nums">{expo.exhibitorCountKnown === false ? '未披露' : expo.chineseExhibitorCount}</span> 家
                 </p>
               </div>
             </div>

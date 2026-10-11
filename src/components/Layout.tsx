@@ -10,8 +10,7 @@ export const Layout = () => {
         className="max-w-7xl mx-auto px-4 py-2 text-xs text-muted-foreground"
         role="note"
       >
-        AI 检索摘要需核验。按需刷新，浏览器缓存最长 24
-        小时；收藏仅保存在当前浏览器。
+        公开来源定时更新，数据需核验且不代表全市场；未知字段不推测。收藏仅保存在当前浏览器。
       </p>
       <main className="w-full">
         <Outlet />

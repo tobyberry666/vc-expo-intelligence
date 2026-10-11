@@ -1,6 +1,11 @@
 import { z } from 'zod';
 
 const field = z.string().max(1000);
+const sourceUrl = z
+  .string()
+  .url()
+  .max(2000)
+  .refine((value) => new URL(value).protocol === 'https:');
 export const investmentSchema = z.object({
   id: z.string().min(1).max(16000),
   company: field.min(2),
@@ -11,6 +16,8 @@ export const investmentSchema = z.object({
   date: field,
   summary: z.string().max(4000),
   source: z.literal('live'),
+  sourceName: field.optional(),
+  sourceUrl: sourceUrl.optional(),
 });
 export const expoSchema = z.object({
   id: z.string().min(1).max(16000),
@@ -23,6 +30,9 @@ export const expoSchema = z.object({
   description: z.string().max(4000),
   exhibitors: z.array(field.min(1)).max(1000),
   source: z.literal('live'),
+  sourceName: field.optional(),
+  sourceUrl: sourceUrl.optional(),
+  exhibitorCountKnown: z.boolean().optional(),
 });
 export type LiveInvestmentItem = z.infer<typeof investmentSchema>;
 export type LiveExpoItem = z.infer<typeof expoSchema>;

@@ -46,7 +46,7 @@ export default function HomePage() {
                 </h1>
                 <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1.5">
                   <Sparkles className="size-3.5 text-primary" />
-                  IDG · 红杉中国 · 高瓴 · CES · WAIC 等全球顶级平台动态一站式聚合
+                  真实融资报道与主办方展会日程 · 每条信息可追溯来源
                 </p>
               </div>
             </div>

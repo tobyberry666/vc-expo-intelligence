@@ -9,7 +9,11 @@ export type FeedLoader = (
   signal: AbortSignal,
   onPhase: (phase: FeedPhase) => void,
 ) => Promise<FeedResult>;
-export function createFeedStore(loader: FeedLoader, storage: StoragePort) {
+export function createFeedStore(
+  loader: FeedLoader,
+  storage: StoragePort,
+  cacheTTL = CACHE_TTL,
+) {
   let cache = readFeedCache(storage, true);
   let controller: AbortController | null = null;
   let generation = 0;
@@ -72,12 +76,16 @@ export function createFeedStore(loader: FeedLoader, storage: StoragePort) {
       );
       if (current !== generation || request.signal.aborted) return;
       const keepInvestments =
-        !result.liveInvestments.length && snapshot.liveInvestments.length > 0;
+        result.updatedAt === undefined &&
+        !result.liveInvestments.length &&
+        snapshot.liveInvestments.length > 0;
       const keepExpos =
-        !result.liveExpos.length && snapshot.liveExpos.length > 0;
+        result.updatedAt === undefined &&
+        !result.liveExpos.length &&
+        snapshot.liveExpos.length > 0;
       cache = {
         version: 4,
-        timestamp: Date.now(),
+        timestamp: result.updatedAt ?? Date.now(),
         legacyIds: cache?.legacyIds ?? {},
         fullSummary: result.fullSummary,
         liveInvestments: keepInvestments
@@ -125,7 +133,7 @@ export function createFeedStore(loader: FeedLoader, storage: StoragePort) {
   function ensureLoaded(): Promise<void> {
     if (initialized) return pending ?? Promise.resolve();
     initialized = true;
-    if (cache && Date.now() - cache.timestamp <= CACHE_TTL)
+    if (cache && Date.now() - cache.timestamp <= cacheTTL)
       return Promise.resolve();
     pending = refresh();
     return pending;

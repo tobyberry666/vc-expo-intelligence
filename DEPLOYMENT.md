@@ -11,7 +11,7 @@ npm run preview
 
 发布 dist/ 到支持 SPA 的静态站点。所有非资产路径必须回退到 index.html，否则直接访问 /investments/:id 或 /expos/:id 会返回服务器 404。运行时没有后台健康检查接口；用 index.html 和真实页面烟测检查静态可用性。
 
-子路径以 CLIENT_BASE_PATH=/vc-expo-intelligence/ 构建。资产、路由和分享链接采用同一 base。预览也保持该配置。GitHub Pages 默认缺少 SPA fallback，不能只上传 dist 就承诺详情直链可用；使用有 rewrite 的静态服务，或单独设计 Pages fallback。
+子路径以 CLIENT_BASE_PATH=/vc-expo-intelligence/ 构建。资产、路由和分享链接采用同一 base。预览也保持该配置。GitHub Pages 使用 `.github/workflows/pages.yml` 自动采集与构建，以复制 index.html 为 404.html 的方式支持详情直达。Pages 设置选择 GitHub Actions。详见 [真实数据说明](docs/public-data.md)。
 
 Nginx 根路径最小配置（需按实际域名、HTTPS 和文件目录调整）：
 

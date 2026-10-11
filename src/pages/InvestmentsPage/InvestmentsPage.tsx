@@ -188,7 +188,7 @@ export default function InvestmentsPage() {
                 >
                   <div className="flex items-center gap-2">
                     <Brain className="size-4 text-primary" />
-                    <span className="text-sm font-semibold text-foreground">AI 实时投资情报</span>
+                    <span className="text-sm font-semibold text-foreground">公开投融资情报</span>
                     <Badge variant="outline" className="text-primary border-primary/30 text-xs gap-0.5">
                       <Sparkles className="size-2.5" />
                       LIVE
@@ -392,10 +392,10 @@ export default function InvestmentsPage() {
                         <Loader2 className="size-7 text-primary animate-spin" />
                       </div>
                       <h3 className="text-lg font-semibold text-foreground mb-1">
-                        正在搜索全网最新数据...
+                        正在获取最新数据…
                       </h3>
                       <p className="text-sm text-muted-foreground max-w-sm">
-                        正在并行搜索多个领域的最新投融资与展会情报，预计需要 10-15 秒
+                        正在获取投融资动态…
                       </p>
                     </motion.div>
                   ) : filteredInvestments.length === 0 ? (

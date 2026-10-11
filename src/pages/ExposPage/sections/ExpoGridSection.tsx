@@ -78,7 +78,7 @@ function ExpoGridSection({ expos }: ExpoGridSectionProps) {
                 {(expo.source === 'live' || expo.id.startsWith('live-')) && (
                   <Badge variant="outline" className="bg-background/70 backdrop-blur-sm text-xs text-primary border-primary/30 gap-0.5">
                     <Sparkles className="size-2" />
-                    AI实时
+                    情报
                   </Badge>
                 )}
               </div>
@@ -86,7 +86,7 @@ function ExpoGridSection({ expos }: ExpoGridSectionProps) {
               <div className="absolute top-3 right-3">
                 <Badge variant="outline" className="bg-background/70 backdrop-blur-sm text-xs gap-1">
                   <Users className="size-3" />
-                  {expo.chineseExhibitorCount} 家中国企业
+                  {expo.exhibitorCountKnown === false ? '中国展商数量未披露' : `${expo.chineseExhibitorCount} 家中国企业`}
                 </Badge>
               </div>
             </div>

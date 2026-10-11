@@ -44,7 +44,7 @@ export default function StatsCardsSection({
     return [
       {
         label: '投资事件',
-        value: totalInvestments,
+        value: totalInvestments || '—',
         suffix: '笔',
         description: '近期追踪到的投融资动态',
         icon: TrendingUp,
@@ -54,9 +54,9 @@ export default function StatsCardsSection({
       },
       {
         label: '活跃机构',
-        value: activeInstitutions,
+        value: activeInstitutions || '未披露',
         suffix: '家',
-        description: '近期有投资行为的顶级 PE/VC',
+        description: '已披露的投资机构（非全市场）',
         icon: Building2,
         accent: 'text-chart-2',
         bg: 'bg-chart-2/10',
@@ -64,7 +64,7 @@ export default function StatsCardsSection({
       },
       {
         label: '科技展会',
-        value: totalExpos,
+        value: totalExpos || '—',
         suffix: '场',
         description: '全球顶级科技与行业展会',
         icon: Calendar,
@@ -74,9 +74,9 @@ export default function StatsCardsSection({
       },
       {
         label: '中国参展企业',
-        value: totalChineseExhibitors,
+        value: liveExpos.length && liveExpos.every((e) => e.exhibitorCountKnown !== false) ? totalChineseExhibitors : '未披露',
         suffix: '家',
-        description: '参展的中国科技企业累计',
+        description: '仅统计已核实的中国展商数量',
         icon: Users,
         accent: 'text-chart-4',
         bg: 'bg-chart-4/10',
